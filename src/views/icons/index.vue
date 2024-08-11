@@ -1,8 +1,9 @@
 <template>
   <div class="icons-container">
     <aside>
-      <a href="https://vue3-element-admin-site.midfar.com/guide/advanced/icon.html" target="_blank">Add and use
-      </a>
+      <a
+        href="https://vue3-element-admin-site.midfar.com/guide/advanced/icon.html"
+        target="_blank">Add and use </a>
     </aside>
     <el-tabs type="border-card">
       <el-tab-pane label="Icons">
@@ -109,3 +110,4 @@ export default defineComponent({
   }
 }
 </style>
+

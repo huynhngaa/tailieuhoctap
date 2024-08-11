@@ -29,8 +29,8 @@ export default defineComponent({
 .link--mallki {
   font-weight: 800;
   color: #4dd9d5;
-  font-family: 'Dosis', sans-serif;
-  -webkit-transition: color 0.5s 0.25s;
+  font-family: "Quicksand", sans-serif;
+    -webkit-transition: color 0.5s 0.25s;
   transition: color 0.5s 0.25s;
   overflow: hidden;
   position: relative;

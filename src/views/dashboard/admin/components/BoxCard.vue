@@ -14,6 +14,7 @@
       </div>
       <div class="progress-item">
         <span>JavaScript</span>
+        
         <el-progress :percentage="18" />
       </div>
       <div class="progress-item">
@@ -21,6 +22,7 @@
         <el-progress :percentage="12" />
       </div>
       <div class="progress-item">
+        
         <span>ESLint</span>
         <el-progress :percentage="100" status="success" />
       </div>

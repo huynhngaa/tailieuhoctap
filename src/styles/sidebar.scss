@@ -206,9 +206,13 @@
       margin-left: -2px;
     }
   }
-
+  .el-menu-item.is-active {
+    // color: var(--el-menu-active-color);
+    background-color: #338585 !important;
+}
   .nest-menu .el-sub-menu>.el-sub-menu__title,
   .el-menu-item {
+   
     .text {
       overflow: hidden;
       text-overflow: ellipsis;

@@ -119,7 +119,9 @@ export default defineComponent({
     margin-bottom: 32px;
   }
 }
-
+.el-row{
+  border-radius: 8px;
+}
 @media (max-width:1024px) {
   .chart-wrapper {
     padding: 8px;

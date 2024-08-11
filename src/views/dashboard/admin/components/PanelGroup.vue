@@ -1,7 +1,7 @@
 <template>
   <el-row :gutter="40" class="panel-group">
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
+      <div class="card-panel farmer" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
@@ -14,7 +14,7 @@
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
+      <div class="card-panel tool" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
           <svg-icon icon-class="message" class-name="card-panel-icon" />
         </div>
@@ -27,7 +27,7 @@
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
+      <div class="card-panel plant" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-money">
           <svg-icon icon-class="money" class-name="card-panel-icon" />
         </div>
@@ -40,7 +40,7 @@
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+      <div class="card-panel sheet" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-shopping">
           <svg-icon icon-class="shopping" class-name="card-panel-icon" />
         </div>
@@ -73,60 +73,62 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .panel-group {
-  margin-top: 18px;
+  margin-top: 8px;
 
   .card-panel-col {
     margin-bottom: 32px;
+    
   }
 
   .card-panel {
+  
     display: flex;
     height: 108px;
     cursor: pointer;
     font-size: 12px;
     position: relative;
     overflow: hidden;
-    color: #666;
+    color: #000000;
     background: #fff;
     box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
-    border-color: rgba(0, 0, 0, .05);
+    // border-color: rgba(0, 0, 0, .05);
+    border-bottom-color: red;
+    border-radius: 8px;
 
     &:hover {
-      .card-panel-icon-wrapper {
-        color: #fff;
-      }
+    
 
       .icon-people {
-        background: #40c9c6;
+        background: #b2d1d1;
       }
 
       .icon-message {
-        background: #36a3f7;
+        background: #ffe7ba;
       }
 
       .icon-money {
-        background: #f4516c;
+        background: #ffd2c8;
       }
 
       .icon-shopping {
-        background: #34bfa3
+        background: #f5f6f7
       }
     }
 
     .icon-people {
-      color: #40c9c6;
+      color: #006666 ;
     }
 
     .icon-message {
-      color: #36a3f7;
+      color: #ffae1a ;
     }
 
     .icon-money {
-      color: #f4516c;
+      color: #ff8367;
     }
 
     .icon-shopping {
-      color: #34bfa3
+      color: #848e9b
     }
 
     .card-panel-icon-wrapper {
@@ -150,7 +152,9 @@ export default defineComponent({
 
       .card-panel-text {
         line-height: 18px;
-        color: rgba(0, 0, 0, 0.45);
+        color: #86909C;
+        font-size: 14px !important;
+        // color: rgba(0, 0, 0, 0.45);
         font-size: 16px;
         margin-bottom: 12px;
       }
@@ -179,5 +183,26 @@ export default defineComponent({
       float: none !important;
     }
   }
+}
+
+.farmer{
+
+  border-bottom: solid 3px  #006666 !important;
+}
+
+.tool{
+  border-bottom: solid 3px #ffae1a !important;
+}
+
+.plant{
+  border-bottom: solid 3px  #ff8367 !important;
+
+
+}
+
+.sheet{
+  border-bottom: solid 3px  #848e9b !important;
+
+ 
 }
 </style>

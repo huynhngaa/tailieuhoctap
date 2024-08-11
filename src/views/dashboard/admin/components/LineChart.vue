@@ -95,13 +95,8 @@ export default defineComponent({
         },
         series: [{
           name: 'expected',
-          itemStyle: {
-            color: '#FF005A'
-          },
-          lineStyle: {
-            color: '#FF005A',
-            width: 2
-          },
+       
+          
           smooth: true,
           type: 'line',
           data: expectedData,

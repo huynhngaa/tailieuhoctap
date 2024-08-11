@@ -1,8 +1,8 @@
 import { markRaw } from 'vue';
-import { createRouter, createWebHistory } from 'vue-router'; // createWebHashHistory, createWebHistory
+import { createRouter, createWebHistory } from 'vue-router'; 
 import type { Router, RouteRecordRaw, RouteComponent } from 'vue-router';
 import { Help as IconHelp } from '@element-plus/icons-vue';
-
+import { LuFlower2 } from "react-icons/lu";
 /* Layout */
 const Layout = ():RouteComponent => import('@/layout/index.vue');
 
@@ -12,13 +12,15 @@ import chartsRouter from './modules/charts';
 import nestedRouter from './modules/nested';
 import tableRouter from './modules/table';
 
-/**
- * constantRoutes
- * a base page that does not have permission requirements
- * all roles can be accessed
- *
- * 注意：hidden、alwaysShow 属性配置移动到了meta中！！！
- */
+
+// export const  routerMain:RouteRecordRaw[] =[ 
+//   {
+//     path: '/detail/:bv_ma',
+//     name: 'Detail',
+//     component: () => import('@/views/documentation/detail.vue')
+//   }
+// ];
+
 export const constantRoutes:RouteRecordRaw[] = [
   {
     path: '/redirect',
@@ -31,6 +33,28 @@ export const constantRoutes:RouteRecordRaw[] = [
       }
     ]
   },
+  // {
+  //   path: '/documentation',
+  //   component: Layout,
+  //   meta: { hidden: true },
+  //   children: [
+  //     {
+  //       path: 'detail/:bv_ma',
+  //          component: () => import('@/views/documentation/detail.vue'),
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: '/detail;',
+  //   component: () => import('@/views/documentation/detail.vue'),
+  //   meta: { hidden: true }
+  // },
+  // {
+  //   path: '/detail/:bv_ma',
+  //   name: 'Detail',
+  //   component: () => import('@/views/documentation/detail.vue'),
+  //   meta: { hidden: true }
+  // },
   {
     path: '/login',
     component: () => import('@/views/login/index.vue'),
@@ -51,6 +75,7 @@ export const constantRoutes:RouteRecordRaw[] = [
     component: () => import('@/views/error-page/401.vue'),
     meta: { hidden: true }
   },
+ 
   {
     path: '/',
     component: Layout,
@@ -60,118 +85,170 @@ export const constantRoutes:RouteRecordRaw[] = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index.vue'),
         name: 'Dashboard',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
+        meta: { title: 'Bảng điều khiển',  icon: 'dashboard', affix: true }
       }
     ]
   },
   {
+    path: '/danhmuc',
+    component: Layout,
+    redirect: 'danhmuc/phancong-danhmuc/',
+    children: [
+      {
+        path: 'phancong-danhmuc',
+        component: () => import('@/views/danhmuc/phancong-danhmuc.vue'),
+        name: 'PhanCongDanhMuc',
+        meta: {
+          title: 'Phân công quản lý danh mục',
+          icon: 'excel',
+          roles: ['admin'] 
+        }
+      }
+    ]
+  },
+
+  {
     path: '/documentation',
     component: Layout,
+    redirect: '/documentation/index',
+    meta: { title: 'Quản lý nông dân', icon: 'user', affix: true },
     children: [
       {
         path: 'index',
         component: () => import('@/views/documentation/index.vue'),
         name: 'Documentation',
-        meta: { title: '文档', icon: 'documentation', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/guide',
-    component: Layout,
-    redirect: '/guide/index',
-    children: [
+        meta: { title: 'Quản lý nông dân', icon: 'user', affix: true }
+      },
       {
-        path: 'index',
-        component: () => import('@/views/guide/index.vue'),
-        name: 'Guide',
-        meta: { title: '引导页', icon: 'guide', noCache: true }
+        path: 'detail/:bv_ma',
+        name: 'Detail',
+        component: () => import('@/views/documentation/detail.vue'),
+        meta: { hidden: true } // Ẩn route này khỏi thanh điều hướng
       }
     ]
   },
+  
+  
   {
     path: '/profile',
     component: Layout,
     redirect: '/profile/index',
-    meta: { hidden: true },
     children: [
       {
         path: 'index',
         component: () => import('@/views/profile/index.vue'),
         name: 'Profile',
-        meta: { title: '个人中心', icon: 'user', noCache: true }
+        meta: { title: 'Quản lý công cụ', icon: 'user', noCache: true },
+        props: route => ({ nd_username: route.query.nd_username })
       }
     ]
   }
 ];
 
-/**
- * asyncRoutes
- * the routes that need to be dynamically loaded based on user roles
- *
- * 注意：hidden、alwaysShow 属性配置移动到了meta中！！！
- */
+
 export const asyncRoutes:RouteRecordRaw[] = [
   {
-    path: '/permission',
+    path: '/guide',
     component: Layout,
-    redirect: '/permission/page',
-    name: 'Permission',
-    meta: {
-      alwaysShow: true, // will always show the root menu
-      title: '权限测试页',
-      icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
-    },
+    redirect: '/guide/index',
+        name: 'Guide',
+        meta: {alwaysShow: true, title: 'Quản lý cây trồng', icon: 'guide', affix: true },
+        children: [
+          {
+            path: 'index',
+            component: () => import('@/views/guide/index.vue'),
+            // name: 'PagePermission',
+            meta: {
+              title: 'Hoa',
+            
+            }
+          },
+          {
+            path: 'directive',
+            component: () => import('@/views/permission/directive.vue'),
+            name: 'DirectivePermission',
+            meta: {
+              title: 'Rau củ'
+             
+            }
+          }]
+      
+    
+  },
+  {
+    path: '/nguoidung',
+    component: Layout,
+    redirect: '/nguoidung/index',
     children: [
       {
-        path: 'page',
-        component: () => import('@/views/permission/page.vue'),
-        name: 'PagePermission',
+        path: 'index',
+        component: () => import('@/views/nguoidung/index.vue'),
+        name: 'QuanLyNguoiDung',
         meta: {
-          title: '页面权限',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'directive',
-        component: () => import('@/views/permission/directive.vue'),
-        name: 'DirectivePermission',
-        meta: {
-          title: '指令权限'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
-      {
-        path: 'role',
-        component: () => import('@/views/permission/role.vue'),
-        name: 'RolePermission',
-        meta: {
-          title: '角色权限',
-          roles: ['admin']
+          title: 'Quản lý người dùng',
+          icon: 'user',
+          roles: ['admin'] 
         }
       }
     ]
   },
-
   {
-    path: '/icon',
+    path: '/danhmuc',
     component: Layout,
+    redirect: '/danhmuc/chitietdanhmuc',
+    children: [
+      {
+        path: 'chitietdanhmuc',
+        component: () => import('@/views/danhmuc/index.vue'),
+        name: 'ChiTietDanhMuc',
+        meta: {
+          title: 'Quản lý danh mục',
+          icon: 'excel',
+          roles: ['admin'] 
+        }
+      }
+    ]
+  },
+  {
+    path: '/monhoc',
+    component: Layout,
+    redirect: '/monhoc/index',
     children: [
       {
         path: 'index',
-        component: () => import('@/views/icons/index.vue'),
-        name: 'Icons',
-        meta: { title: '图标', icon: 'icon', noCache: true }
+        component: () => import('@/views/monhoc/index.vue'),
+        name: 'MonHoc',
+        meta: {
+          title: 'Quản lý môn học',
+          icon: 'excel',
+          roles: ['admin'] 
+        }
+      }
+    ]
+  },
+  {
+    path: '/khoilop',
+    component: Layout,
+    redirect: '/khoilop/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/khoilop/index.vue'),
+        name: 'KhoiLop',
+        meta: {
+          title: 'Quản lý khối lớp',
+          icon: 'excel',
+          roles: ['admin'] 
+        }
       }
     ]
   },
 
   // /** when your routing map is too long, you can split it into small modules **/
   componentsRouter,
-  chartsRouter,
-  nestedRouter,
-  tableRouter,
+  // chartsRouter,
+  // nestedRouter,
+  // tableRouter,
 
   {
     path: '/example',
@@ -179,7 +256,7 @@ export const asyncRoutes:RouteRecordRaw[] = [
     redirect: '/example/list',
     name: 'Example',
     meta: {
-      title: '综合示例',
+      title: 'Quản lý lớp học',
       icon: markRaw(IconHelp)
     },
     children: [
@@ -187,35 +264,18 @@ export const asyncRoutes:RouteRecordRaw[] = [
         path: 'create',
         component: () => import('@/views/example/create.vue'),
         name: 'CreateArticle',
-        meta: { title: '创建文章', icon: 'edit' }
+        meta: { title: 'Thêm lớp mới', icon: 'edit' }
       },
-      {
-        path: 'edit/:id(\\d+)',
-        component: () => import('@/views/example/edit.vue'),
-        name: 'EditArticle',
-        meta: { hidden: true, title: '编辑文章', noCache: true, activeMenu: '/example/list' }
-      },
+   
       {
         path: 'list',
         component: () => import('@/views/example/list.vue'),
         name: 'ArticleList',
-        meta: { title: '文章列表', icon: 'list' }
+        meta: { title: 'Sửa thông tin', icon: 'list' }
       }
     ]
   },
 
-  {
-    path: '/tab',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/tab/index.vue'),
-        name: 'Tab',
-        meta: { title: 'Tabs标签页', icon: 'tab' }
-      }
-    ]
-  },
 
   {
     path: '/error',
@@ -223,7 +283,7 @@ export const asyncRoutes:RouteRecordRaw[] = [
     redirect: 'noRedirect',
     name: 'ErrorPages',
     meta: {
-      title: '错误页面',
+      title: 'Thống kê',
       icon: '404'
     },
     children: [
@@ -231,163 +291,19 @@ export const asyncRoutes:RouteRecordRaw[] = [
         path: '401',
         component: () => import('@/views/error-page/401.vue'),
         name: 'Page401',
-        meta: { title: '401', noCache: true }
+        meta: { title: 'Thống kê lớp', noCache: true }
       },
       {
         path: '404',
         component: () => import('@/views/error-page/404.vue'),
         name: 'Page404',
-        meta: { title: '404', noCache: true }
+        meta: { title: 'Thống kê tài sản', noCache: true }
       }
     ]
   },
 
-  {
-    path: '/error-log',
-    component: Layout,
-    children: [
-      {
-        path: 'log',
-        component: () => import('@/views/error-log/index.vue'),
-        name: 'ErrorLog',
-        meta: { title: '错误日志', icon: 'bug' }
-      }
-    ]
-  },
+ 
 
-  {
-    path: '/excel',
-    component: Layout,
-    redirect: '/excel/export-excel',
-    name: 'Excel',
-    meta: {
-      title: 'Excel',
-      icon: 'excel'
-    },
-    children: [
-      {
-        path: 'export-excel',
-        component: () => import('@/views/excel/export-excel.vue'),
-        name: 'ExportExcel',
-        meta: { title: '导出 Excel' }
-      },
-      {
-        path: 'export-selected-excel',
-        component: () => import('@/views/excel/select-excel.vue'),
-        name: 'SelectExcel',
-        meta: { title: '导出 已选择项' }
-      },
-      {
-        path: 'export-merge-header',
-        component: () => import('@/views/excel/merge-header.vue'),
-        name: 'MergeHeader',
-        meta: { title: '导出 多级表头' }
-      },
-      {
-        path: 'upload-excel',
-        component: () => import('@/views/excel/upload-excel.vue'),
-        name: 'UploadExcel',
-        meta: { title: '上传 Excel' }
-      }
-    ]
-  },
-
-  {
-    path: '/zip',
-    component: Layout,
-    redirect: '/zip/download',
-    name: 'Zip',
-    meta: { alwaysShow: true, title: 'Zip', icon: 'zip' },
-    children: [
-      {
-        path: 'download',
-        component: () => import('@/views/zip/index.vue'),
-        name: 'ExportZip',
-        meta: { title: '导出 Zip' }
-      }
-    ]
-  },
-
-  {
-    path: '/pdf',
-    component: Layout,
-    redirect: '/pdf/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/pdf/index.vue'),
-        name: 'PDF',
-        meta: { title: 'PDF', icon: 'pdf' }
-      }
-    ]
-  },
-  {
-    path: '/pdf/download',
-    component: () => import('@/views/pdf/download.vue'),
-    meta: { hidden: true }
-  },
-
-  {
-    path: '/theme',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/theme/index.vue'),
-        name: 'Theme',
-        meta: { title: '主题', icon: 'theme' }
-      }
-    ]
-  },
-
-  {
-    path: '/clipboard',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/clipboard/index.vue'),
-        name: 'ClipboardDemo',
-        meta: { title: '剪贴板', icon: 'clipboard' }
-      }
-    ]
-  },
-
-  {
-    path: '/external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://element-plus.midfar.com',
-        meta: { title: '外链', icon: 'link' },
-        redirect: ''
-      }
-    ]
-  },
-
-  {
-    path: '/my-demo',
-    component: Layout,
-    name: 'MyDemo',
-    meta: {
-      title: '我的示例',
-      icon: 'component'
-    },
-    children: [
-      {
-        path: 'element-demo',
-        component: () => import('@/views/mydemo/ElementDemo.vue'),
-        name: 'ElementDemo',
-        meta: { title: 'Element 示例', icon: 'skill' }
-      },
-      {
-        path: 'store-demo',
-        component: () => import('@/views/mydemo/StoreDemo.vue'),
-        name: 'StoreDemo',
-        meta: { title: 'Store 示例', icon: 'lock' }
-      }
-    ]
-  },
 
   // 404 page must be placed at the end !!!
   { path: '/:pathMatch(.*)*', redirect: '/404', meta: { hidden: true }}
@@ -410,7 +326,6 @@ interface RouterPro extends Router {
 
 const router = createTheRouter() as RouterPro;
 
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createTheRouter() as RouterPro;
   router.matcher = newRouter.matcher; // reset router

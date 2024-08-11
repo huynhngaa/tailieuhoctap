@@ -26,14 +26,15 @@ export default defineComponent({
   },
   data() {
     return {
-      title: 'Vue3 Element Admin',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      title: 'NÔNG TRẠI VUI VẺ',
+      // logo: 'https://vegina-store.myshopify.com/cdn/shop/files/logo-1.svg?v=1676488069&width=352'
     };
   }
 });
 </script>
 
 <style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Imperial+Script&family=Paytone+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap');
 .sidebarLogoFade-enter-active {
   transition: opacity 1.5s;
 }
@@ -48,7 +49,7 @@ export default defineComponent({
   width: 100%;
   height: 50px;
   line-height: 50px;
-  background: #2b2f3a;
+  background: #006666;
   text-align: center;
   overflow: hidden;
 
@@ -67,10 +68,10 @@ export default defineComponent({
       display: inline-block;
       margin: 0;
       color: #fff;
-      font-weight: 600;
-      line-height: 50px;
-      font-size: 14px;
-      font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+      font-weight: 800;
+      // line-height: 50px;
+      font-size: 15px;
+      font-family: "Paytone One", sans-serif;
       vertical-align: middle;
     }
   }
