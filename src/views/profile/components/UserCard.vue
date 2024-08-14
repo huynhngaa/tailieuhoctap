@@ -1,6 +1,12 @@
 <template>
   <el-card style="margin-bottom:20px;">
-    <div class="user-profile" v-if="user">
+    <template #header>
+      <div class="clearfix">
+        <span>About me</span>
+      </div>
+    </template>
+
+    <div class="user-profile">
       <div class="box-center">
         <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
           <div>Hello</div>
@@ -13,7 +19,7 @@
       </div>
     </div>
 
-    <div class="user-bio" v-if="user">
+    <div class="user-bio">
       <div class="user-education user-bio-section">
         <div class="user-bio-section-header">
           <svg-icon icon-class="education" /><span>Education</span>
@@ -52,32 +58,30 @@
   </el-card>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue';
-import { getNguoiDungDetail } from '@/api/nguoidung';
+<script>
 import PanThumb from '@/components/PanThumb';
+import { defineComponent } from 'vue';
 import { uppercaseFirst } from '@/utils/filters';
 
-
-const userUsername = new URLSearchParams(window.location.search).get('nd_username'); // Lấy nd_username từ query string
-
-const fetchUserData = async () => {
-  if (userUsername) {
-    try {
-      user.value = await getNguoiDungDetail(userUsername);
-      console.log(user.value);
-      
-    } catch (error) {
-      console.error('Lỗi khi tải dữ liệu người dùng:', error);
+export default defineComponent({
+  components: { PanThumb },
+  props: {
+    user: {
+      type: Object,
+      default: () => {
+        return {
+          name: '',
+          email: '',
+          avatar: '',
+          role: ''
+        };
+      }
     }
+  },
+  methods: {
+    uppercaseFirst
   }
-};
-
-onMounted(() => {
-  fetchUserData();
 });
-
-const uppercaseFirstMethod = uppercaseFirst;
 </script>
 
 <style lang="scss" scoped>

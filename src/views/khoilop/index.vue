@@ -1,8 +1,23 @@
 <template>
     <div class="app-container">
-        <el-button @click="dialogFormVisible = true" type="primary" :icon="Plus">Thêm lớp</el-button>
-       
-        <el-table :data="paginatedData" style="width: 100%">
+        <el-row :gutter="5"> <el-col :span="10">
+                <el-input v-model="search" placeholder="Tìm kiếm khối lớp" />
+            </el-col>
+
+            <el-col :offset="7" :span="3">
+                <el-button @click="dialogFormVisible = true" type="primary" :icon="Plus">Thêm khối lớp</el-button>
+            </el-col>
+            <el-col :span="3">
+                <el-button style="background-color: #35ba9b;" @click="exportToExcel" type="primary" :icon="Download"
+                    :disabled="isTableEmpty"> <!-- Add this line -->
+                    Xuất excel
+                </el-button>
+            </el-col>
+
+
+        </el-row>
+
+        <el-table :data="paginatedData" style="width: 100%; margin-top: 20px;">
             <el-table-column label="STT" prop="kl_ma" />
             <el-table-column label="Khối lớp">
 
@@ -18,7 +33,7 @@
 
             <el-table-column align="right">
                 <template #header>
-                    <el-input v-model="search" size="small" placeholder="Tìm kiếm khối lớp" />
+                    <!-- <el-input v-model="search" size="small" placeholder="Tìm kiếm khối lớp" /> -->
                 </template>
                 <template #default="scope">
                     <el-button type="primary" v-if="editingRow === scope.$index" size="small"
@@ -35,23 +50,16 @@
             </el-table-column>
         </el-table>
         <div class="pagination-container">
-            <el-pagination
-            v-model:current-page="currentPage"
-            v-model:page-size="pageSize"
-            :page-sizes="[5,10, 20, 50, 100]"
-            :background="true"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="tableData.length"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-        />
-         </div>
+            <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize"
+                :page-sizes="[5, 10, 20, 50, 100]" :background="true" layout="total, sizes, prev, pager, next, jumper"
+                :total="tableData.length" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+        </div>
         <el-dialog v-model="dialogFormVisible" title="Thêm khối lớp" width="500">
             <el-form :model="form">
                 <el-form-item label="Tên" :label-width="formLabelWidth">
                     <el-input v-model="form.name" autocomplete="off" />
                 </el-form-item>
-               
+
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
@@ -66,10 +74,12 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { getListKhoiLop,addKhoiLop, updateKhoiLop, deleteKhoiLop } from '@/api/khoilop';
+import { ref, computed, onMounted, watch } from 'vue';
+import { getListKhoiLop, addKhoiLop, updateKhoiLop, deleteKhoiLop } from '@/api/khoilop';
 import { ElMessage } from 'element-plus'
-import { Plus } from '@element-plus/icons-vue'
+import { Plus, Download } from '@element-plus/icons-vue'
+
+import * as XLSX from 'xlsx';
 const search = ref('');
 const tableData = ref([]);
 const editingRow = ref(null);
@@ -79,7 +89,7 @@ const currentPage = ref(1);
 const pageSize = ref(10);
 const form = ref({
     name: '',
-  
+
 })
 
 const filterTableData = computed(() =>
@@ -89,7 +99,10 @@ const filterTableData = computed(() =>
             data.kl_ten.toLowerCase().includes(search.value.toLowerCase())
     )
 );
-const paginatedData  = computed(() => {
+const isTableEmpty = computed(() => {
+    return filterTableData.value.length === 0;
+});
+const paginatedData = computed(() => {
     const start = (currentPage.value - 1) * pageSize.value;
     const end = start + pageSize.value;
     return filterTableData.value.slice(start, end);
@@ -195,18 +208,44 @@ const handleDelete = async (index, row) => {
         ElMessage.error('Có lỗi xảy ra!')
     }
 };
+watch(search, () => {
+    currentPage.value = 1;
+});
+const exportToExcel = () => {
+    // Prepare the data for export
+    const worksheet = XLSX.utils.json_to_sheet(filterTableData.value);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Khối lớp');
 
+    // Generate buffer and create download link
+    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: EXCEL_TYPE });
+    const now = new Date();
+    const formattedDate = now.toISOString().slice(0, 19).replace(/T|:/g, '-'); // Format: YYYY-MM-DD-HH-MM-SS
+    const fileName = `khoilop_${formattedDate}.xlsx`;
+    // Create a download link and click it
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(data);
+    link.download = fileName;
+    link.click();
+};
+
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 
 </script>
-<style>
+<style scoped>
+.app-container {
+    margin: 20px;
+}
 .pagination-container {
     position: fixed;
     bottom: 20px;
     left: 0;
     right: 0;
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     padding: 10px 20px;
     background: white;
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
-}</style>
+}
+</style>

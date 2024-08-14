@@ -34,3 +34,36 @@ export function getListBaiVietOfUser(ndUsername) {
       throw error;
     });
   }
+
+
+  export function getListBaiVietAdmin() {
+    return axios.get(API+'/baivietlistadmin.php')
+      .then(response => response.data)
+      .catch(error => {
+        console.error('Failed to fetch users:', error);
+        throw error;
+      });
+  }
+
+
+  export function getBaiVietDetailQuanLy(bvMa) {
+    return axios.get(`${API}/baivietdetailquanly.php`, {
+      params: { bv_ma: bvMa }
+    })
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Failed to fetch details:', error);
+      throw error;
+    });
+  }
+
+  export function suaTrangThaiBaiViet(bvMa, ttMa) {
+    return axios.get(`${API}/baivietedittrangthai.php`, {
+      params: { bv_ma: bvMa, tt_ma: ttMa }
+    })
+    .then(response => response.data)
+    .catch(error => {
+      console.error('Failed to update status:', error);
+      throw error;
+    });
+  }

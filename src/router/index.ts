@@ -31,8 +31,10 @@ export const constantRoutes:RouteRecordRaw[] = [
         path: '/redirect/:path(.*)',
         component: () => import('@/views/redirect/index.vue')
       }
+
     ]
   },
+ 
   // {
   //   path: '/documentation',
   //   component: Layout,
@@ -123,7 +125,7 @@ export const constantRoutes:RouteRecordRaw[] = [
         path: 'detail/:bv_ma',
         name: 'Detail',
         component: () => import('@/views/documentation/detail.vue'),
-        meta: { hidden: true } // Ẩn route này khỏi thanh điều hướng
+        meta: { hidden: true } 
       }
     ]
   },
@@ -176,6 +178,39 @@ export const asyncRoutes:RouteRecordRaw[] = [
     
   },
   {
+    path: '/baiviet',
+    component: Layout,
+    redirect: '/baiviet/index',
+    name: 'QuanLyBaiViet',
+    meta: {
+      title: 'Quản lý bài viết',
+      icon: markRaw(IconHelp)
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/baiviet/index.vue'),
+        name: 'DanhSachBaiViet',
+        meta: { title: 'Danh sách bài viết', icon: 'edit' }
+      },
+      {
+        path: 'kiem-duyet',
+        component: () => import('@/views/baiviet/kiem-duyet.vue'),
+        name: 'KiemDuyetBaiViet',
+        meta: { title: 'Kiểm duyệt bài viết', icon: 'edit' }
+      },
+   
+      {
+       
+        path: 'chitiet-baiviet/:bv_ma',
+        component: () => import('@/views/baiviet/chitiet-baiviet.vue'),
+        name: 'ChiTietBaiVietQuanLy',
+        meta: { hidden: true } 
+      }
+    ]
+  
+  },
+  {
     path: '/nguoidung',
     component: Layout,
     redirect: '/nguoidung/index',
@@ -210,7 +245,7 @@ export const asyncRoutes:RouteRecordRaw[] = [
     ]
   },
   {
-    path: '/monhoc',
+    path: '/monhoc',  
     component: Layout,
     redirect: '/monhoc/index',
     children: [
